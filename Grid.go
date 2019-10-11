@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Grid struct {
 	width  int
@@ -43,8 +45,53 @@ func (g Grid) Load(locations []Location) {
 func (g Grid) Evaluate() {
 	for i := 0; i < len(g.pixels); i++ {
 		for j := 0; j < len(g.pixels[i]); j++ {
-			fmt.Print(g.pixels[i][j])
+			fmt.Print(g.nextAlive(i,j))
+			g.pixels[i][j] = g.nextAlive(i,j)
 		}
 		fmt.Println()
 	}
 }
+func (g Grid) isalive(x int, y int)bool {
+
+	return g.pixels[x][y]
+}
+func (g Grid) nextAlive(x int, y int) bool {
+	count := 0
+	if y+1 < len(g.pixels[x]) && g.isalive(x,y+1) {
+		count++
+	}
+	if y-1 >= 0 && g.isalive(x,y-1) {
+		count++
+	}
+
+	if  y-1 >= 0 &&  x+1 < len(g.pixels) && g.isalive(x+1,y-1) {
+		count++
+
+	}
+	if  x+1 < len(g.pixels) && y+1 < len(g.pixels[x]) && g.isalive(x+1,y+1) {
+		count++
+
+	}
+	if x-1 >= 0 && g.isalive(x-1,y) {
+		count++
+
+	}
+
+	if x-1 >= 0 &&  g.isalive(x-1,y) {
+		count++
+
+	}
+	if x-1 >= 0 && y+1 < len(g.pixels[x]) && g.isalive(x-1,y+1) {
+		count++
+
+	}
+	if x-1 >= 0 && y-1 >= 0 && g.isalive(x-1,y-1) {
+		count++
+
+	}
+	if count <  2 {
+		return false
+	}
+	return g.pixels[x][y]
+}
+

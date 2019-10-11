@@ -5,21 +5,24 @@ import (
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
+	"math/rand"
+	"time"
 )
 
 func run () {
-	location1 := Location{1, 1, true}
-	location2 := Location{1, 2, true}
-	location3 := Location{1, 3, true}
-	location4 := Location{2, 1, true}
-	location5 := Location{2, 2, true}
-	location6 := Location{2, 3, true}
-	location7 := Location{3, 1, true}
-	location8 := Location{3, 2, true}
-	location9 := Location{3, 3, true}
+	grid := GridInit(10, 10)
+
+	location1 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location2 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location3 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location4 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location5 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location6 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location7 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location8 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
+	location9 := Location{randomCoordinate(1,grid.width), randomCoordinate(1,grid.height), randomCellValue()}
 
 	locations := []Location{location1, location2, location3,location4, location5, location6,location7, location8, location9}
-	grid := GridInit(10, 10)
 	grid.Load(locations)
 	cfg := pixelgl.WindowConfig{
 		Title:  "Conway Game of Life",
@@ -52,4 +55,14 @@ func run () {
 }
 func main() {
 	pixelgl.Run(run)
+}
+
+
+func randomCellValue() bool {
+	return rand.Float32() < 0.5
+}
+
+func randomCoordinate(min int, max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max - min) + min
 }
